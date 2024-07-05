@@ -7,30 +7,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    if ($password == $confirm_password) {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Verificar si el correo ya está registrado
+    $check_email_sql = $conn->prepare("SELECT email FROM users WHERE email = ?");
+    $check_email_sql->bind_param("s", $email);
+    $check_email_sql->execute();
+    $check_email_sql->store_result();
 
-        try {
-            $sql = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $hashed_password);
-
-            if ($stmt->execute()) {
-                echo "Registration successful!";
-            } else {
-                echo "Error: Could not execute the query.";
-            }
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    if ($check_email_sql->num_rows > 0) {
+        echo "Este correo electrónico ya está registrado.";
     } else {
-        echo "Passwords do not match!";
+        if ($password == $confirm_password) {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            $sql = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+
+            if ($sql) {
+                $sql->bind_param("sss", $username, $email, $hashed_password);
+
+                if ($sql->execute()) {
+                    echo "¡Registro exitoso!";
+                } else {
+                    echo "Error: No se pudo ejecutar la consulta.";
+                }
+            } else {
+                echo "Error: No se pudo preparar la consulta.";
+            }
+
+            $sql->close();
+        } else {
+            echo "¡Las contraseñas no coinciden!";
+        }
     }
 
-    $conn = null; // Cerrar la conexión
+    $check_email_sql->close();
 } else {
-    echo "Invalid request method.";
+    echo "Método de solicitud inválido.";
 }
+
+$conn->close();
 ?>
