@@ -1,0 +1,172 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --primary-color: #858282;
+    --second-color: #ffffff;
+    --black-color: #000000;
+    --accent-color: #ffb951;
+}
+
+body {
+    background-color: #f0f0f0;
+    color: var(--black-color);
+}
+
+header {
+    background-color: var(--primary-color);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo a {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--black-color);
+    text-decoration: none;
+}
+
+/*Destokp Navigation*/
+
+.navbar {
+    display: flex;
+    padding: 0;
+}
+
+.navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.navbar li {
+    position: relative;
+    margin: 0 15px;
+}
+
+.navbar a, .navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 10px 30px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--black-color);
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.navbar a:hover, .navbar .active, .navbar .active:focus,
+.navbar li:hover > a {
+    color: var(--accent-color);
+}
+
+.navbar .dropdown ul {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin: 0;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    background: #fff;
+    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    transition: 0.3s;
+}
+
+.navbar .dropdown ul li{
+    min-width: 200px;
+}
+
+.navbar .dropdown ul a {
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #151515;
+    font-weight: 400;
+}
+
+.navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+    background-color: var(--accent-color);
+}
+
+.navbar .dropdown:hover > ul {
+    opacity: 1;
+    visibility: visible;
+}
+
+/*menus desplegables anidados*/
+.navbar .dropdown .dropdown ul {
+    top: 0;
+    left: 100%;
+    visibility: hidden;
+}
+
+.navbar .dropdown .dropdown:hover > ul {
+    opacity: 1;
+    top: 0;
+    left: 100%;
+    visibility: visible;
+}
+
+@media (max-width: 1366px) {
+    .navbar .dropdown .dropdown ul {
+        left: -90%;
+    }
+    .navbar .dropdown .dropdown:hover > ul {
+        left: -100%;
+    }
+}
+
+#hero {
+    position: relative;
+    background: url("../img/aeropuerto.png") center center/cover no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--second-color);
+}
+
+#hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+#hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+#hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+#hero h2 {
+    font-size: 24px;
+    font-weight: 400;
+}
